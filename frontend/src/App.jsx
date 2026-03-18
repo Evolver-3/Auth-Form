@@ -1,8 +1,9 @@
-import React from 'react'
-
+import AuthenticationPage from "./form/AuthenticationPage"
 const App = () => {
   return (
-    <div>App</div>
+    <div>
+      <AuthenticationPage/>
+    </div>
   )
 }
 
