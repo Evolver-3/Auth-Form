@@ -1,7 +1,7 @@
 import React from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Register from './Register'
-import Login from './login'
+import Login from './LoginPage'
 
 const AuthenticationPage = () => {
  
