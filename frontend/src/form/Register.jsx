@@ -23,7 +23,7 @@ const Register = () => {
     e.preventDefault()
 
     try{
-      console.log(form)
+      
       const res=await axios.post("http://localhost:5000/api/v1/users/register",form)
 
       console.log(res.data)
@@ -41,18 +41,23 @@ const Register = () => {
 
       <h2 className='text-white font-mono text-4xl lg:text-6xl'>Register User</h2>
 
-    <form onSubmit={handleSubmit} className=' gap-4 py-10 w-2/3 ring-1 ring-slate-200 rounded-md bg-slate-500 flex flex-col items-center justify-center '>
+    <form onSubmit={handleSubmit} className=' gap-4 py-10 w-2/3 ring-1 ring-slate-200 rounded-md bg-slate-500 flex flex-col items-center '>
 
-      <div className='grid grid-cols-2 gap-2 '>
+      <div className='grid grid-cols-1 gap-2 lg:gap-5 px-10 w-full'>
 
-      <label>Enter fullname</label>
-      <input type="text" name="fullname" onChange={handleChange} placeholder='Fullname' className='rounded-sm ring-1 outline-none px-2'/>
-      <label>Enter email</label>
-      <input type="email" name="email" onChange={handleChange}  placeholder='Email'/>
-      <label>Enter username</label>
-      <input type="text" name="username" onChange={handleChange}  placeholder='Username'/>
-      <label>Enter password</label>
-      <input type='password' name="password" onChange={handleChange} placeholder="password"/>
+      {Box("Enter fullname","text","fullname","Fullname",
+        handleChange
+      )}
+      {Box("Enter email","email","email","Email",
+        handleChange
+      )}
+      {Box("Enter username","text","username","Username",
+        handleChange
+      )}
+      {Box("Enter password","password","password","Password",
+        handleChange
+      )}
+
       </div>
       <button type='submit' className='bg-lime-600 text-white py-2 px-4 rounded-md hover:bg-lime-700 hover:ring-1 hover:ring-lime-500 transition-all duration-150 hover:text-shadow-sm hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]'>Register</button>
     </form>
@@ -61,3 +66,13 @@ const Register = () => {
 }
 
 export default Register
+
+
+const Box=(text,type,name,placeholder,handleChange)=>{
+  return (
+    <div className='flex justify-between lg:px-10'>
+      <label className='text-lg md:text-xl'>{text}</label>
+      <input type={type} name={name} onChange={handleChange} placeholder={placeholder} className='rounded-sm ring-1 outline-none px-2 lg:w-2/3 '/>
+    </div>
+  )
+}
