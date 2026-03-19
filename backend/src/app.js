@@ -9,7 +9,7 @@ app.use(cors({
   credentials:true
 }))
 
- console.log("CORS value:", process.env.CORS)
+
 
 app.use(express.json({
   limit:"16kb"
