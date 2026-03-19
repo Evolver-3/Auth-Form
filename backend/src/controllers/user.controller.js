@@ -3,6 +3,7 @@ import { User } from '../models/user.models.js'
 import {ApiError} from '../utils/ApiError.js'
 import { ApiResponse } from "../utils/ApiResponse.js"
 import jwt from 'jsonwebtoken'
+import { TokenBlacklist } from '../models/blacklist.model.js'
 
 
 const generateAccessAndRefreshTokens=async(userId)=>{
@@ -104,18 +105,14 @@ const loginUser=asyncHandler(async(req,res)=>{
 ))
 })
 
+
 const logoutUser=asyncHandler(async(req,res)=>{
-  await User.findByIdAndUpdate(
-    req.user._id,
-    {
-      $set:{
-        refreshToken:undefined
-      }
-    }, 
-    {
-      returnDocument:"after"
-    }
-  )
+  const token=req.cookies.accessToken
+
+  if(token){
+    await TokenBlacklist.create({token})
+  }
+
 
   const options={
     httpOnly:true,
