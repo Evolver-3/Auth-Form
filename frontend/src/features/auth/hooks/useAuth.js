@@ -1,6 +1,6 @@
-import {useContext} from 'react'
+import {useContext,useEffect} from 'react'
 import { AuthContext } from '../auth.context.jsx'
-import { login,Register,logout } from '../services/auth.api.js'
+import { login,Register,logout,profile } from '../services/auth.api.js'
 
 export const useAuth=()=>{
 
@@ -51,8 +51,26 @@ export const useAuth=()=>{
     }finally{
       setLoading(false)
     }
-    
   }
+
+   useEffect(()=>{
+    const getAndSetUser=async()=>{
+      try {
+        const data=await profile()
+        setUser(data.user)
+        
+      } catch (error) {
+        console.error("Error fetching user profile:",error)
+        setUser(null)
+        
+      }finally{
+        setLoading(false)
+      }
+    }
+    getAndSetUser()
+  },[])
+
+  
 
   return {user,loading,handleRegister,handleLogin,handleLogout}
 }
