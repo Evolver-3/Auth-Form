@@ -30,4 +30,8 @@ import routes from './routes/user.routes.js'
 
 app.use("/api/v1/users",routes)
 
+
+import {interRouter} from './routes/inter.routes.js'
+
+app.use("/api/v1/users",interRouter)
 export {app}

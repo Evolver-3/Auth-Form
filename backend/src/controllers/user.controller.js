@@ -3,7 +3,7 @@ import { User } from '../models/user.models.js'
 import {ApiError} from '../utils/ApiError.js'
 import { ApiResponse } from "../utils/ApiResponse.js"
 import jwt from 'jsonwebtoken'
-import { TokenBlacklist } from '../models/blacklist.models.js'
+import { TokenBlacklist } from '../models/blacklist.model.js'
 
 
 const generateAccessAndRefreshTokens=async(userId)=>{
