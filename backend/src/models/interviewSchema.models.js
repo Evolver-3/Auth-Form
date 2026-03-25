@@ -14,7 +14,8 @@ const technicalQuestionSchema=new mongoose.Schema(
       type:String,
       required:[ true, "Answer is required" ]
     }
-  }
+  },
+  {_id:false}
 )
 
 const behavioralQuestionSchema=new mongoose.Schema(
@@ -31,10 +32,11 @@ const behavioralQuestionSchema=new mongoose.Schema(
       type:String,
       required:[ true, "Answer is required" ]
     }
-  }
+  },
+  {_id:false}
 )
 
-const skillSchema=new mongoose.Schema(
+const skillGapSchema=new mongoose.Schema(
   {
     skill:{
       type:String,
@@ -42,13 +44,14 @@ const skillSchema=new mongoose.Schema(
     },
     severity:{
       type:String,
-      enum:["Low","Medium","High"],
+      enum:["low","medium","high"],
       required:[ true, "Severity is required" ]
     }
-  }
+  },
+  {_id:false}
 )
 
-const preparationSchema=new mongoose.Schema(
+const preparationPlanSchema=new mongoose.Schema(
   {
     day:{
       type:Number,
@@ -64,7 +67,8 @@ const preparationSchema=new mongoose.Schema(
         required:[ true, "Task is required" ]
       }
     ]
-  }
+  },
+  {_id:false}
 )
 const InterviewReportSchema=new mongoose.Schema(
   {
@@ -72,32 +76,34 @@ const InterviewReportSchema=new mongoose.Schema(
       type:String,
       required:[true,"title is required"]
     },
-    ReportScore:{
+    matchScore:{
       type:Number,
-      required:true
+      required:[true,"matchScore is required"],
+      min:0,
+      max:100
     },
     resume:{
       type:String,
-      required:true
+      required:[true, "resume is required"]
 
     },
     selfDescription:{
       type:String,
-      required:true
-
+      required:[true, "Self description is required"]
     },
     jobDescription:{
       type:String,
-      requried:true
+      required:[true, "Job description is required"]
     },
-    technicalQuestion:[technicalQuestionSchema],
-    behavioralQuestion:[behavioralQuestionSchema],
-    skillsRequired:[skillSchema],
-    preparationPlan:[preparationSchema],
+    technicalQuestions:[technicalQuestionSchema],
+    behavioralQuestions:[behavioralQuestionSchema],
+    skillGaps:[skillGapSchema],
+    preparationPlan:[preparationPlanSchema],
     
     user:{
       type:mongoose.Schema.Types.ObjectId,
-      ref:"User"
+      ref:"User",
+      required:true
     }
   
   },
