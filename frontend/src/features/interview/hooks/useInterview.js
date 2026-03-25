@@ -1,7 +1,6 @@
 import {generateInterviewReport,getInterviewReportById,getAllInterviewReports} from '../services/interview.api.js'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { InterviewContext } from '../interview.context.jsx'
-import { useParams } from 'react-router-dom'
 
 
 export const useInterview=()=>{
