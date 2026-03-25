@@ -32,20 +32,17 @@ const generateInterviewController=asyncHandler(async(req,res)=>{
   
   const interReport=await ReportSchema.create(
     {
-      user:req.user.id,
-      jobDescription,
-      selfDescription,
-      resume:resumeText,
-      ReportScore:ReportAi.ReportScore,
-      technicalQuestion:ReportAi.technicalQuestion,
-      behavioralQuestion:ReportAi.behavioralQuestion,
-      skillsRequired:ReportAi.skillsRequired,
-      preparationPlan:ReportAi.preparationPlan,
-      title:ReportAi.title
+     user:req.user.id,
+     resume:resumeText,
+     selfDescription,
+     jobDescription,
+     ...ReportAi
     }
   )
+
+
   res.status(200).json(
-    new ApiResponse(200, interReport, "created successfully !!")
+    new ApiResponse(200, "created successfully !!", interReport)
   )
 
 })
@@ -65,7 +62,7 @@ const getInterviewControllerById=asyncHandler(async(req,res)=>{
   }
 
   res.status(200).json(
-    200,interviewReport, "Interview report fetched successfully !!"
+    new ApiResponse(200, "report at the userId !!", interviewReport)
   )
 })
 
@@ -84,7 +81,7 @@ const getAllInterviewReportController=asyncHandler(async(req,res)=>{
   )
 
   res.status(200).json(
-    new ApiResponse(200, interviewReports, "All interview Report fetched successfully")
+    new ApiResponse(200, "All interview Report fetched successfully", interviewReports)
   )
 })
 
