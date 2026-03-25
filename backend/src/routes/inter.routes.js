@@ -7,11 +7,11 @@ import { upload } from '../middleware/multer.middleware.js'
 
 const interRouter=Router()
 
-interRouter.route("/Report").post(verifyJWT,upload.single("resume"),generateInterviewController)
+interRouter.route("/report").post(verifyJWT,upload.single("resume"),generateInterviewController)
 
 //report by Id
 
-interRouter.route("/Report/:interviewId").get(verifyJWT,generateInterviewController,getInterviewControllerById)
+interRouter.route("/report/:interviewId").get(verifyJWT,getInterviewControllerById)
 
 //all report
 
