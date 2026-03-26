@@ -77,8 +77,8 @@ const getAllInterviewReportController=asyncHandler(async(req,res)=>{
       createdAt:-1
     }
   ).select(
-    "-resume -selfDescription -jobDescription -__v -technicalQuestion -behavioralQuestion -skillsRequired -preparationPlan"
-  )
+    "-resume -selfDescription -jobDescription -__v -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan"
+  ).lean()
 
   res.status(200).json(
     new ApiResponse(200, "All interview Report fetched successfully", interviewReports)
