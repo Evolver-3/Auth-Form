@@ -4,6 +4,7 @@ import {ApiError} from '../utils/ApiError.js'
 import { ApiResponse } from "../utils/ApiResponse.js"
 import jwt from 'jsonwebtoken'
 import { TokenBlacklist } from '../models/blacklist.model.js'
+import { uploadToCloudinary } from '../utils/cloudinary.js'
 
 
 const generateAccessAndRefreshTokens=async(userId)=>{
@@ -25,8 +26,12 @@ const generateAccessAndRefreshTokens=async(userId)=>{
   }
 }
 
+
 const registerUser=asyncHandler(async(req,res)=>{
-  //  console.log(req.body)
+
+   console.log("request body", req.body)
+  
+  
 
   const {username,fullname,email,password}=req.body 
  
@@ -46,11 +51,39 @@ const registerUser=asyncHandler(async(req,res)=>{
     throw new ApiError(409,"User with the same email or username already exists !!")
   }
 
+  const avatarLocalPath=req.files?.avatar?.[0]
+  const coverImageLocalPath=req.files?.coverImage?.[0]
+
+  console.log("avatar local path:",avatarLocalPath)
+
+  console.log("coverImage local path:", coverImageLocalPath)
+
+
+  if(!avatarLocalPath){
+    throw new ApiError(400,"Avatar image is required !!")
+  }
+
+  const avatar=await uploadToCloudinary(avatarLocalPath.buffer)
+
+  console.log("avatar:", avatar)
+
+  const coverImage=coverImageLocalPath ? await uploadToCloudinary(coverImageLocalPath.buffer) : null
+
+  // console.log("avatar secure url:",avatar?.secure_url)
+
+  if(!avatar){
+    console.log("Failed to upload avatar image")
+    throw new ApiError(500,"Failed to upload avatar image to Cloudinary !!")
+  }
+
+
   const user=await User.create({
     fullname,
     username,
     email,
-    password
+    password,
+    avatar:avatar.secure_url,
+    coverImage:coverImage?.secure_url  || ""
   })
 
   const createdUser=await User.findById(user._id).select("-password -refreshToken")
@@ -59,11 +92,12 @@ const registerUser=asyncHandler(async(req,res)=>{
     throw new ApiError(500,"Something went wrong while creating the user !!")
   }
 
-  return res.status(201).json(new ApiResponse(201,
-    "User registered successfully !!", createdUser
-  ))
+  // console.log(createdUser)
+
+  return res.status(201).json(new ApiResponse(201,createdUser,"User registered successfully !!"))
 
 })
+
 
 const loginUser=asyncHandler(async(req,res)=>{
 
@@ -106,6 +140,7 @@ const loginUser=asyncHandler(async(req,res)=>{
 })
 
 
+
 const logoutUser=asyncHandler(async(req,res)=>{
   const token=req.cookies.accessToken
 
@@ -120,6 +155,7 @@ const logoutUser=asyncHandler(async(req,res)=>{
   }
   return res.status(200).clearCookie("accessToken",options).clearCookie("refreshToken",options).json(new ApiResponse(200,null,"User logged out successfully !!"))
 })
+
 
 const refreshAccessToken=asyncHandler(async(req,res)=>{
    const incomingRefreshToken=req.cookies?.refreshToken || req.body.refreshToken
@@ -159,9 +195,113 @@ const refreshAccessToken=asyncHandler(async(req,res)=>{
    }
 })
 
+
+const changeCurrentPassword=asyncHandler(async(req,res)=>{
+
+  const userId=req.user.id
+
+  if(!userId){
+    throw new ApiError(401, "Unauthorized Access!!")
+  }
+
+  const {currentPassword,newPassword,confirmNewPassword}=req.body
+
+  if((!currentPassword)||(!newPassword) || (!confirmNewPassword)){
+    throw new ApiError(400, "currentPassword and a newPassword is required !!")
+  }
+
+  if(newPassword===currentPassword){
+    throw new ApiError(400, "newPassword must be different from currentPassword !!")
+  }
+
+
+  if(newPassword!==confirmNewPassword){
+  throw new ApiError(400, "newPassword and confirmNewPassword do not match !!")
+}
+
+const user=await User.findById(userId)
+
+const isCurrentPasswordCorrect=await user.comparePassword(currentPassword)
+
+if(!isCurrentPasswordCorrect){
+  throw new ApiError(401, "currentPassword is incorrect !!")
+}
+
+user.password=newPassword
+
+await user.save({validateBeforeSave:false})
+
+return res.status(200).json(new ApiResponse(200,null,"Password changed successfully !!"))
+})
+
+
+const updateAvatar=asyncHandler(async(req,res)=>{
+
+
+  const avatarLocalPath=req.file?.buffer
+
+  if(!avatarLocalPath){
+    throw new ApiError(400,"Avatar image is required !!")
+  }
+
+  const avatar=await uploadToCloudinary(avatarLocalPath)
+
+  if(!avatar ||!avatar.secure_url){
+    throw new ApiError(500, "Failed to upload avatar image to Cloudinary !!")
+  }
+
+  const user=await User.findByIdAndUpdate(req.user?._id,
+    {
+      $set:{
+        avatar:avatar.secure_url
+      }
+    },
+  {new:true}
+).select("-password")
+
+if(!user){
+  throw new ApiError(500, "Something went wrong while updating avatar !!")
+}
+
+return res.status(200).json(new ApiResponse(200,user, "Avatar updated successfully !!"))
+})
+
+
+const updateCoverImage=asyncHandler(async(req,res)=>{
+
+  const coverImageLocalPath=req.file?.buffer
+
+  if(!coverImageLocalPath){
+    throw new ApiError(400, "Cover image is required !!")
+  }
+
+  const coverImage=await uploadToCloudinary(coverImageLocalPath)
+
+  if(!coverImage || !coverImage.secure_url){
+    throw new ApiError(500, "Failed to upload coverImage to Cloudinary !!")
+  }
+
+  const user=await User.findByIdAndUpdate(req.user?._id,{
+    $set:{
+      coverImage:coverImage.secure_url
+    }
+  },{new:true}
+).select("-password -refreshToken")
+
+if(!user){
+  throw new ApiError(500, "Something went wrong while updatin coverImage !!")
+}
+
+return res.status(200).json(new ApiResponse(200, user, "Cover image updated successfully !!"))
+
+})
+
+
+
 const getUserProfile=asyncHandler(async(req,res)=>{
 
   return res.status(200).json(new ApiResponse(200, req.user,"User profile fetched successfully !!"))
 })
+ 
 
-export {registerUser,loginUser,logoutUser,refreshAccessToken,getUserProfile}
+export {registerUser,loginUser,logoutUser,refreshAccessToken,getUserProfile,changeCurrentPassword,updateAvatar,updateCoverImage}
