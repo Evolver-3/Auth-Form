@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 
 import { useAuth } from '../hooks/useAuth'
+import { FrontPageComponent } from './FrontPageComponent'
 
 
 const Login = () => {
@@ -29,40 +30,47 @@ const Login = () => {
   }
 
   if(loading){
-    return (<main><h1>Loading.....</h1></main>)
+    return (<main><h1 className='h1style'>Loading.....</h1></main>)
   }
 
   return (
-    <main >
-      <div className='container'>
-        <h1 className=''>Login</h1>
+    <FrontPageComponent text={"Don't have an account?"} textspan={"Sign Up"} point={"/register"}>
+  
+      <div className='flex flex-col p-14 gap-10 my-16'>
 
-        {error && <p className='text-red-600'>{error}</p>}
+        <h2 className='text-3xl text-neutral-600 font-semibold leading-tight'>Logged In</h2>
+        
+        {error && <p className='error-message'>{error}</p>}
 
         <form onSubmit={handleSubmit}>
           
-          <div className='InputGroup'>
-            <label htmlFor='email' >Email</label>
+          <div className='flex flex-col items-center justify-center gap-6 w-full'>
+
+            <div className='inputGroup'>
+           
             <input type="email" name="email" 
             onChange={(e)=>{setEmail(e.target.value)}}
-            placeholder='Enter your email'/>
+            placeholder='E-mail'
+            className='inputBody'/>
           </div>
 
-          <div className='InputGroup'>
-            <label htmlFor='password'>Password</label>
-
+          <div className='inputGroup'>
+           
             <input type="password" name="password" 
             onChange={(e)=>{setPassword(e.target.value)}}
-            placeholder="enter password"/>
+            placeholder="Password"
+            className='inputBody'/>
           </div>
 
-          <button>Login</button>
+          </div>
+
+          <button className='py-1 px-8 md:px-16'>Sign In</button>
         </form>
 
 
-        <p>Don't have an account? <Link to={"/register"}>Register</Link></p>
       </div>
-    </main>
+ 
+    </FrontPageComponent>
   )
 }
 
