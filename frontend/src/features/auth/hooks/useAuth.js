@@ -1,4 +1,4 @@
-import {useContext,useEffect} from 'react'
+import {useContext,useEffect, useRef} from 'react'
 import { AuthContext } from '../auth.context.jsx'
 import { login,Register,logout,profile } from '../services/auth.api.js'
 
@@ -7,6 +7,8 @@ export const useAuth=()=>{
   const context=useContext(AuthContext)
 
   const {user,setUser,loading,setLoading}=context
+
+  const hasFetched=useRef(false)
 
   const handleLogin=async({email,password})=>{
     setLoading(true)
@@ -24,14 +26,14 @@ export const useAuth=()=>{
     
   }
 
-  const handleRegister=async({username,fullname,email,password})=>{
+  const handleRegister=async({username,fullname,email,password,avatar,coverImage})=>{
     setLoading(true)
 
     try {
-      const data=await Register({username,fullname,email,password})
+      const data=await Register({username,fullname,email,password,avatar,coverImage})
       setUser(data.user)
       return true
-    } catch (error) {
+    } catch(error){
       console.error("Error registering user:", error)
       return false
     }finally{
@@ -53,15 +55,24 @@ export const useAuth=()=>{
     }
   }
 
+  
+
    useEffect(()=>{
+
+    if(hasFetched.current) return 
+    hasFetched.current=true
+
+    if(user)return
+
     const getAndSetUser=async()=>{
       try {
         const data=await profile()
-        setUser(data.user)
-        
+        if(data?.user){
+          setUser(data.user)
+        }
       } catch (error) {
         console.error("Error fetching user profile:",error)
-        setUser(null)
+       
         
       }finally{
         setLoading(false)
