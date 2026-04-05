@@ -1,11 +1,13 @@
 import {generateInterviewReport,getInterviewReportById,getAllInterviewReports} from '../services/interview.api.js'
-import { useContext } from 'react'
+import { useContext,useEffect } from 'react'
 import { InterviewContext } from '../interview.context.jsx'
+import { useParams } from 'react-router-dom'
 
 
 export const useInterview=()=>{
 
   const context=useContext(InterviewContext)
+  const {interviewId}=useParams()
 
 
  if(!context){
@@ -18,16 +20,13 @@ export const useInterview=()=>{
  const generateReport=async({jobDescription, selfDescription, resume})=>{
 
   setLoading(true)
-
+  let res=null
 
   try{
-    const res=await generateInterviewReport({jobDescription, selfDescription, resume})
+     res=await generateInterviewReport({jobDescription, selfDescription, resume})
 
-    setReport(res)
-    console.log(res)
- 
-
-    return res
+    setReport(res.data)
+    console.log(res.data)
 
 
   }catch(error){
@@ -35,6 +34,7 @@ export const useInterview=()=>{
   }finally{
     setLoading(false)
   }
+  return res.data
   
  }
 
@@ -43,34 +43,47 @@ export const useInterview=()=>{
 
     setLoading(true)
 
-
+    let res=null
     try{
-      const res=await getInterviewReportById(interviewId)
-      setReport(res)
-      return res
+       res=await getInterviewReportById(interviewId)
+      setReport(res.data)
+      console.log(res.data)
+      
     }catch(error){
       console.error("Error generating interview report by ID:",error)
     }finally{
       setLoading(false)
     }
+    return res.data
     
   }
 
   const generateAllReports=async()=>{
     setLoading(true)
 
+    let res=null
+
     try{
-      const res=await getAllInterviewReports()
-      setReports(res)
-      return res
+      res=await getAllInterviewReports()
+      setReports(res.data)
+
+      
     }catch(error){
       console.error("Error generating all interview reports:",error)
     }finally{
       setLoading(false)
 
     }
-    
+    return res.data  
   }
+
+  useEffect(()=>{
+    if(interviewId){
+      generateReportById(interviewId)
+    }else{
+      generateAllReports()
+    }
+  },[interviewId])
 
 
 
