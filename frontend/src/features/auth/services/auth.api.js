@@ -65,9 +65,9 @@ export async function login({email,password}){
       email,
       password
     })
-    console.log("Login response:", response.data)
+
     const user = extractUser(response.data)
-    console.log("Extracted user from login:", user)
+  
   
     return {user}
 
@@ -98,8 +98,7 @@ export async function profile(){
     // console.log("Extracted user from profile:", user)
     
     const result = { user }    
-      
-     console.log("Returning from profile:", result)
+
 
     return result
   }catch(error){
@@ -108,3 +107,17 @@ export async function profile(){
   }
 }
 
+
+export async function updateProfile({avatar}){
+  try{
+    const response=await api.patch("/api/v1/users/updateAvatar",{avatar})
+
+    const user=extractUser(response.data)
+
+    console.log(user)
+
+  }catch(error){
+    console.log(error)
+    throw error
+  }
+}

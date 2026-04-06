@@ -1,6 +1,7 @@
 import { useInterview} from '../hooks/useInterview.js'
 import {useState,useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
+import HomePageWrapper from './reportcomp/HomePageWrapper.jsx'
 
 const Home=()=>{
 
@@ -27,13 +28,14 @@ const Home=()=>{
   if(loading){
     return (
       <main>
-        <h1>Generating your interview report ...</h1>
+        <h1 className='h1style'>Generating your interview report ...</h1>
       </main>
     )
   }
 
   return(
-    <main className="h-screen flex flex-col items-center justify-center gap-5 ">
+    <HomePageWrapper>
+    <div className="h-screen flex flex-col items-center justify-center gap-5 ">
 
       <div className=" border border-netrual-100 rounded-md px-5 py-5 flex items-center justify-center gap-5 ">
         <label htmlFor="JobDescription" >Job Description</label>
@@ -57,10 +59,10 @@ const Home=()=>{
 
         <button
         onClick={handleGenerateReport}
-        className="">Generate Interview Report</button>
+        className="btn">Generate Interview Report</button>
       </div>
-    </main>
-
+    </div>
+    </HomePageWrapper>
   )
 }
 
