@@ -14,8 +14,9 @@ export const useAuth=()=>{
     setLoading(true)
     try {
       const data=await login({email,password})
-      setUser(data.user)
+      setUser(data.user.user)
       setLoading(false)
+
       return true
     } catch (error) {
       console.error("error loggin in ",error)
@@ -55,6 +56,23 @@ export const useAuth=()=>{
     }
   }
 
+  const updateAvatarImage=async({avatar})=>{
+    setLoading(true)
+
+    try{
+      const data=await updateProfile({avatar:avatar})
+
+      console.log(data)
+      setUser(data.data)
+      return true
+
+    }catch(error){
+      console.log("error updating avatar image", error)
+    }finally{
+      setLoading(false)
+    }
+  }
+
   
 
    useEffect(()=>{
@@ -83,5 +101,5 @@ export const useAuth=()=>{
 
   
 
-  return {user,loading,handleRegister,handleLogin,handleLogout}
+  return {user,loading,handleRegister,handleLogin,handleLogout,updateAvatarImage}
 }
