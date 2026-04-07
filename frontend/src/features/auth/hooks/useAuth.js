@@ -1,6 +1,6 @@
 import {useContext,useEffect, useRef} from 'react'
 import { AuthContext } from '../auth.context.jsx'
-import { login,Register,logout,profile } from '../services/auth.api.js'
+import { login,Register,logout,profile,updateProfile,updatePassword} from '../services/auth.api.js'
 
 export const useAuth=()=>{
 
@@ -59,11 +59,12 @@ export const useAuth=()=>{
   const updateAvatarImage=async({avatar})=>{
     setLoading(true)
 
+    console.log(avatar)
+
     try{
       const data=await updateProfile({avatar:avatar})
-
-      console.log(data)
       setUser(data.data)
+ 
       return true
 
     }catch(error){
@@ -73,7 +74,26 @@ export const useAuth=()=>{
     }
   }
 
-  
+
+  const PasswordChange=async({currentPassword,newPassword,confirmNewPassword})=>{
+    setLoading(true)
+
+    console.log(currentPassword,newPassword,confirmNewPassword)
+
+    try{
+      const data=await updatePassword({currentPassword,newPassword,confirmNewPassword})
+      console.log(data)
+      setUser(data)
+      return true
+      
+    }catch(error){
+      console.log("error changing password",error)
+      throw error
+
+    }finally{
+      setLoading(false)
+    }
+  }
 
    useEffect(()=>{
 
@@ -101,5 +121,5 @@ export const useAuth=()=>{
 
   
 
-  return {user,loading,handleRegister,handleLogin,handleLogout,updateAvatarImage}
+  return {user,loading,handleRegister,handleLogin,handleLogout,updateAvatarImage,PasswordChange}
 }
