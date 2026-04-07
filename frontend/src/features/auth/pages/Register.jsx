@@ -36,18 +36,17 @@ const Register = () => {
     return (<main><h1 className='h1style'>Loading.....</h1></main>)
   }
   return (
-    <FrontPageComponent text={"Already have an account? "} textspan={"Sign In"} point={"/login"}>
+    <FrontPageComponent text={"Already have an account?"} textspan={"Sign In"} point={"/login"}>
      
-      <div className='flex flex-col p-14 '>
+      <div className='flex flex-col gap-10 my-16 w-full'>
 
-        <h2 className='text-3xl text-neutral-600 font-semibold leading-tight'>Join Us</h2>
-        
-
+        <h2 className='h2Headings'>Join Us</h2>
+      
         {error && <p className='error-message'>{error}</p>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
 
-          <div className='flex flex-col items-center justify-center gap-6 w-full'>
+          <div className='flex flex-col items-center justify-center gap-6 w-full px-3 pb-5 md:px-10 lg:px-20'>
 
           <div className='inputGroup'>
             <input type="text" name="fullname"
@@ -76,14 +75,14 @@ const Register = () => {
             placeholder="Password"
             className='inputBody'/>
 
-            <div className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:text-black' onClick={()=>setShowPassword(!showPassword)}>
+            <div className='absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer hover:text-black bg-neutral-100 px-1.5' onClick={()=>setShowPassword(!showPassword)}>
               { showPassword ? <SvgIconHide/> : <SvgIcon/> }
             </div>
           </div>
 
   
 
-        <div className='flex items-center gap-5 justify-between'>
+        <div className='flex flex-col md:flex-row items-center gap-5 justify-between'>
 
           <label className=' uploadLabel'>
             <div className='uploadp'>
@@ -117,9 +116,9 @@ const Register = () => {
           </label>
         </div>
 
-      </div>
+          </div>
 
-          <button className='px-2 py-1 lg:px-16'>Create Account</button>
+          <button className=' px-2 py-1 lg:px-16'>Create Account</button>
         </form>
 
       </div>

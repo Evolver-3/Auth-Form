@@ -37,15 +37,15 @@ const Login = () => {
   return (
     <FrontPageComponent text={"Don't have an account?"} textspan={"Sign Up"} point={"/register"}>
   
-      <div className='flex flex-col p-14 gap-10 my-16'>
+      <div className='flex flex-col gap-10 my-16 w-full py-16'>
 
-        <h2 className='text-3xl text-neutral-600 font-semibold leading-tight'>Logged In</h2>
+        <h2 className='h2Headings'>Logged In</h2>
         
         {error && <p className='error-message'>{error}</p>}
 
         <form onSubmit={handleSubmit}>
           
-          <div className='flex flex-col items-center justify-center gap-6 w-full'>
+          <div className='flex flex-col items-center justify-center gap-6 w-full px-3 pb-7 md:px-10 lg:px-20'>
 
             <div className='inputGroup'>
            
@@ -63,7 +63,7 @@ const Login = () => {
             placeholder="Password"
             className='inputBody'/>
 
-            <div className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:text-black' onClick={()=>setShowPassword(!showPassword)}>
+            <div className='absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer hover:text-black bg-neutral-100 px-1.5' onClick={()=>setShowPassword(!showPassword)}>
               {showPassword ? <SvgIcon/>:<SvgIconHide/>}
             </div>
             </div>
