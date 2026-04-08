@@ -42,7 +42,7 @@ const generateInterviewController=asyncHandler(async(req,res)=>{
 
 
   res.status(200).json(
-    new ApiResponse(200, "created successfully !!", interReport)
+    new ApiResponse(200, interReport, "created successfully !!")
   )
 
 })
@@ -62,7 +62,7 @@ const getInterviewControllerById=asyncHandler(async(req,res)=>{
   }
 
   res.status(200).json(
-    new ApiResponse(200, "report at the userId !!", interviewReport)
+    new ApiResponse(200, interviewReport, "report at the userId !!")
   )
 })
 
@@ -76,12 +76,10 @@ const getAllInterviewReportController=asyncHandler(async(req,res)=>{
     {
       createdAt:-1
     }
-  ).select(
-    "-resume -selfDescription -jobDescription -__v -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan"
-  ).lean()
+  )
 
   res.status(200).json(
-    new ApiResponse(200, "All interview Report fetched successfully", interviewReports)
+    new ApiResponse(200 , interviewReports, "All interview Report fetched successfully")
   )
 })
 

@@ -25,10 +25,8 @@ app.use(cookieParser())
 
 
 
-
-import routes from './routes/user.routes.js'
-
-app.use("/api/v1/users",routes)
+import router from './routes/user.routes.js'
+app.use("/api/v1/users",router)
 
 
 import {interRouter} from './routes/inter.routes.js'
