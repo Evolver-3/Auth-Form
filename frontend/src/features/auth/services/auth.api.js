@@ -18,34 +18,24 @@ export async function Register({username,fullname,password,email,avatar,coverIma
   console.log("Registering data:",{username,fullname,password,email,avatar,coverImage})
 
   try{
-          const formData=new FormData()
+    const formData=new FormData()
 
-          formData.append("username",username)
-          formData.append("fullname",fullname)
-          formData.append("email",email)
-          formData.append("password",password)
+    formData.append("username",username)
+    formData.append("fullname",fullname)
+    formData.append("email",email)
+    formData.append("password",password)
+    
+    if(avatar)formData.append("avatar",avatar)
+    if(coverImage)formData.append("coverImage",coverImage)
+      
+    const res=await api.post("/api/v1/users/register",formData,{
+      transformRequest:(data)=>data
+    })
+    console.log("Full response:", res)
 
-          console.log(avatar)
-          
-          
-        if(avatar)formData.append("avatar",avatar)
-        if(coverImage)formData.append("coverImage",coverImage)
-
-          for(let pair of formData.entries()){
-            console.log(pair[0],pair[1])
-          }
-
-
-            const res=await api.post("/api/v1/users/register",formData,{
-              transformRequest:(data)=>data
-            })
-            console.log("Full response:", res)
-console.log("res.data structure:", Object.keys(res.data))
-console.log("res.data content:", JSON.stringify(res.data, null, 2))
-
-            return{
-              user:extractUser(res.data)
-            }
+    return{
+        user:extractUser(res.data)
+    }
         
     
   }catch(error){
@@ -92,10 +82,8 @@ export async function profile(){
   try{
     const response=await api.get("/api/v1/users/profile")
 
-    // console.log("Response data:", response.data)
-   
     const user = extractUser(response.data)
-    // console.log("Extracted user from profile:", user)
+   
     
     const result = { user }    
 
@@ -110,12 +98,39 @@ export async function profile(){
 
 export async function updateProfile({avatar}){
   try{
-    const response=await api.patch("/api/v1/users/updateAvatar",{avatar})
+    console.log(avatar)
+    const formData=new FormData()
+
+    formData.append('avatar',avatar)
+    const response=await api.patch("/api/v1/users/updateAvatar",formData)
 
     const user=extractUser(response.data)
+    return user
 
-    console.log(user)
+  }catch(error){
+    console.log(error)
+    throw error
+  }
+}
 
+export async function updatePassword({currentPassword,newPassword,confirmNewPassword}){
+  try{
+    
+    // const formData=new FormData()
+
+    // formData.append("currentPassword",currentPassword)
+    // formData.append("newPassword",newPassword)
+    // formData.append("confirmNewPassword",confirmNewPassword)
+
+    const response=await api.post("/api/v1/users/changePassword",{currentPassword,newPassword,confirmNewPassword})
+
+    console.log("data:",response)
+  
+    return{
+        user:extractUser(response.data)
+    }
+        
+    
   }catch(error){
     console.log(error)
     throw error
