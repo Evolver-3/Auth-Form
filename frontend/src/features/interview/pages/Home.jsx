@@ -78,7 +78,7 @@ const LabelData=({text,textData,onChange,placeholder})=>{
       <label className=' text-md md:text-lg lg:text-xl text-neutral-600 font-semibold ' htmlFor={text}>{textData}</label>
 
       <textarea 
-      className='w-80 lg:w-2/3  bg-neutral-100 rounded-md p-3 h-[100px] ring-1 ring-rose-200 outline-none text-neutral-500 text-sm resize-none hover:shadow-soft hover:shadow-rose-200  transition-colors duration-150 ease-in-out placeholder:hover:opacity-0'
+      className='w-80 lg:w-2/3 h-[100px] inputstyle'
       onChange={onChange}
       name={text}
       placeholder={placeholder}
