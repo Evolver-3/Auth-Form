@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAuth } from '../../../auth/hooks/useAuth'
-import { Link } from 'react-router-dom'
-import Settings from './Settings'
+import NavTab from './NavTab'
 import { AnimatePresence } from 'motion/react'
 import { motion } from 'motion/react'
 
@@ -16,7 +15,7 @@ const Nav = () => {
     <div className='flex items-center justify-between px-2 md:px-6 lg:px-12 shadow-finta py-1 overflow-hidden bg-white'>
 
   
-        <motion.img
+      <motion.img
         key={user?.avatar}
         layoutId='avatar'
         src={user?.avatar  || "/default.png"} alt="profile" className='w-10 h-10 rounded-full ring-1 ring-red-400 shadow-md cursor-pointer'
@@ -34,7 +33,7 @@ const Nav = () => {
       <AnimatePresence>
         <motion.div
         className='relative'>
-          {open && <Settings/>}
+          {open && <NavTab/>}
         </motion.div>
       </AnimatePresence>
 

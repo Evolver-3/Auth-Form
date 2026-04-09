@@ -19,14 +19,16 @@ const UpdateProfile = () => {
     upload()
    },[newAvatar])
   return (
-    <main className=' flex flex-col items-center justify-center gap-10'>
+    <HomePageWrapper >
 
-      <h2 className='h2Headings'>Change Your Avatar/Password</h2>
+     <div className='alignDiv px-4'>
+       <h2 className='h2Headings'>Update your profile</h2>
 
-      <div className='w-3/4 lg:w-3/5 py-10 md:px-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-slate-200 rounded-md shadow-weird'>
+      <div className='w-3/4 lg:w-3/5 py-10 md:px-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-slate-100 rounded-md shadow-weird'>
 
-        <div className="relative ">
-        <img src={newAvatar ? URL.createObjectURL(newAvatar): user?.avatar} alt="user-image" className="size-40 lg:size-80 rounded-full lg:rounded-sm shadow-finta ring-1 ring-rose-200"/>
+        <div className="relative">
+         
+        <img src={newAvatar ? URL.createObjectURL(newAvatar): user?.avatar} alt="user-image" className="size-44 lg:size-80 rounded-full lg:rounded-sm shadow-finta ring-1 ring-rose-200"/>
         
         <input
         onChange={(e)=>setNewAvatar(e.target.files[0])}
@@ -52,7 +54,8 @@ const UpdateProfile = () => {
         </div>
 
       </div>
-    </main>
+     </div>
+    </HomePageWrapper>
   )
 }
 

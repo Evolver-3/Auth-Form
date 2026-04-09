@@ -56,7 +56,7 @@ export default PasswordUpdate
 
 const InputItem=({type,itemName,placeholder,onChange})=>{
   return(
-    <div className='inputGroup'>
+    <div className='inputGroup inputstyle'>
       <input
       type={type}
       name={itemName}

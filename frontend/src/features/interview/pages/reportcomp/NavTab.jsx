@@ -5,7 +5,7 @@ import AllReport from './AllReport'
 import { useAuth } from '../../../auth/hooks/useAuth.js'
 import { useNavigate } from 'react-router-dom'
 
-const Settings = () => {
+const NavTab = () => {
 
   const navigate=useNavigate()
 
@@ -77,4 +77,4 @@ const Settings = () => {
   )
 }
 
-export default Settings
+export default NavTab

@@ -1,13 +1,23 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useInterview } from '../../hooks/useInterview'
 import HomePageWrapper from './HomePageWrapper'
+import { generateInterviewReport } from '../../services/interview.api'
 
 const AllReport = () => {
 
   const {reports,generateAllReports}=useInterview()
 
+  const navigate=useNavigate()
 
-  
+const handleClick=(id)=>{
+
+ 
+  if(id){
+ 
+    navigate(`/report/${id}`)
+  }
+}
 
   return (
     <HomePageWrapper>
@@ -19,7 +29,9 @@ const AllReport = () => {
         <div className='grid md:grid-cols-2 gap-4'>
           {reports?.map((data,idx)=>(
             
-            <div className='bg-neutral-300 rounded-md px-3 py-5 flex flex-col gap-4 shadow-weird' key={idx}>
+            <div className='bg-slate-100 rounded-md px-3 py-5 flex flex-col gap-4 shadow-weird'
+            key={data._id}
+            onClick={()=>handleClick(data._id)}>
             <p>{data.title}</p>
 
             <div className='flex items-center justify-between'>
