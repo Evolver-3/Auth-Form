@@ -4,7 +4,8 @@ import Register from "./features/auth/pages/Register";
 import Protected from "./features/auth/components/Protected";
 import Home from "./features/interview/pages/Home";
 import Report from "./features/interview/pages/Report";
-import Output from "./features/interview/pages/Output";
+import AllReport from "./features/interview/pages/reportcomp/AllReport";
+import UpdateProfile from "./features/interview/pages/reportcomp/UpdateProfile";
 
 export const router=createBrowserRouter([
   {
@@ -22,13 +23,19 @@ export const router=createBrowserRouter([
     errorElement:<ErrorPage/>
   },
   {
-    path:"/report/:id",
+    path:"/report/:interviewId",
     element:<Protected><Report/></Protected>,
     errorElement:<ErrorPage/>
   },
   {
-    path:"/reports",
-    element:<Protected><Output/></Protected>
+    path:"/allreports",
+    element:<Protected><AllReport/></Protected>,
+    errorElement:<ErrorPage/>
+  },
+  {
+    path:"/updateProfile",
+    element:<UpdateProfile/>,
+    errorElement:<ErrorPage/>
   }
 ])
 
