@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useInterview } from '../../hooks/useInterview'
 import HomePageWrapper from './HomePageWrapper'
-import { generateInterviewReport } from '../../services/interview.api'
+
 
 const AllReport = () => {
 
