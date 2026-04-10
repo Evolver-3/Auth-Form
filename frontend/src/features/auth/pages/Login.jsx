@@ -3,6 +3,8 @@ import { useNavigate} from 'react-router-dom'
 
 import { useAuth } from '../hooks/useAuth'
 import { FrontPageComponent } from './FrontPageComponent'
+import { Link } from 'react-router-dom'
+import SpinButton from '../../interview/pages/reportcomp/SpinButton'
 
 
 const Login = () => {
@@ -30,50 +32,54 @@ const Login = () => {
     console.log(success)
   }
 
-  if(loading){
-    return (<main><h1 className='h1style'>Loading.....</h1></main>)
-  }
-
   return (
-    <FrontPageComponent text={"Don't have an account?"} textspan={"Sign Up"} point={"/register"}>
+    <FrontPageComponent >
   
-      <div className='flex flex-col gap-10 my-16 w-full py-16'>
+      <div className='flex flex-col gap-2 md:gap-14 mt-20 md:mt-0 w-full rounded-md px-13'>
 
         <h2 className='h2Headings'>Logged In</h2>
         
         {error && <p className='error-message'>{error}</p>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className='mt-20'>
           
-          <div className='flex flex-col items-center justify-center gap-6 w-full px-3 pb-7 md:px-10 lg:px-20'>
+          <div className='flex flex-col items-center justify-center gap-6 w-full px-3 pb-5 md:px-2 lg:px-5'>
 
             <div className='inputGroup'>
-           
-            <input type="email" name="email" 
-            onChange={(e)=>{setEmail(e.target.value)}}
-            placeholder='E-mail'
-            className='inputBody'/>
-          </div>
+              <DataLabels 
+              text={"Email"} 
+              type={"email"} 
+              name={"Email"} 
+              onChange={(e)=>{setEmail(e.target.value)}}
+              placeholder={"Enter Your Email"}/>
+            </div>
 
-          <div className='inputGroup'>
-           
-            <div className='relative'>
-              <input type={showPassword ? "text":"password"} name="password" 
-            onChange={(e)=>{setPassword(e.target.value)}}
-            placeholder="Password"
-            className='inputBody'/>
-
-            <div className='absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer hover:text-black bg-neutral-100 px-1.5' onClick={()=>setShowPassword(!showPassword)}>
+            <div className='inputGroup relative'>
+              <DataLabels
+              text={"Password"}
+              type={showPassword ? "text":"password"} 
+              name={"Password"} 
+              onChange={(e)=>{setPassword(e.target.value)}}
+              placeholder={"Enter Your Password"}/>
+          
+  
+              <div className='absolute right-2.5 bottom-[1px] md:top-[57px] lg:bottom-0.5 -translate-y-1/2 cursor-pointer text-neutral-600 hover:text-neutral-500 bg-transparent px-1.5' onClick={()=>setShowPassword(!showPassword)}>
               {showPassword ? <SvgIcon/>:<SvgIconHide/>}
+              </div>
             </div>
-            </div>
-          </div>
+      
 
           </div>
 
-          <button className='py-1 px-8 md:px-16'>Sign In</button>
+      
+          <SpinButton text={"Sign In"} loading={loading}  className='w-fit mt-6'/>
         </form>
 
+        <p className="text-[12px] md:text-[15px] text-center ">
+          Don't have an account? <Link
+        className="text-blue-600 hover:underline hover:underline-offset-2 transform-gpu duration-200 focus:scale-[101%]" to={"/register"}>Sign up</Link></p>
+
+     
 
       </div>
  
@@ -82,6 +88,18 @@ const Login = () => {
 }
 
 export default Login
+
+
+const DataLabels=({text,type,placeholder,name,onChange})=>{
+  return(
+    <>
+      <label>{text}<span className='text-red-600'>*</span></label>
+      <input
+      className='inputBody '
+      type={type} placeholder={placeholder} name={name} onChange={onChange}/>
+    </>
+  )
+}
 
 
 const SvgIcon=({className})=>{

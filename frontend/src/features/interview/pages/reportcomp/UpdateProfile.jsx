@@ -24,7 +24,7 @@ const UpdateProfile = () => {
      <div className='alignDiv px-4'>
        <h2 className='h2Headings'>Update your profile</h2>
 
-      <div className='w-3/4 lg:w-3/5 py-10 md:px-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-slate-100 rounded-md shadow-weird'>
+      <div className='w-3/4 lg:w-3/5 py-10 md:px-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-slate-200 rounded-md shadow-weird'>
 
         <div className="relative">
          

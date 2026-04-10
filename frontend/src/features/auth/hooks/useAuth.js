@@ -63,8 +63,12 @@ export const useAuth=()=>{
 
     try{
       const data=await updateProfile({avatar:avatar})
-      setUser(data.data)
+      setUser(prev=>({
+        ...prev,
+        avatar:data.data
+      }))
  
+      console.log(avatar)
       return true
 
     }catch(error){

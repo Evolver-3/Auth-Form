@@ -116,11 +116,6 @@ export async function updateProfile({avatar}){
 export async function updatePassword({currentPassword,newPassword,confirmNewPassword}){
   try{
     
-    // const formData=new FormData()
-
-    // formData.append("currentPassword",currentPassword)
-    // formData.append("newPassword",newPassword)
-    // formData.append("confirmNewPassword",confirmNewPassword)
 
     const response=await api.post("/api/v1/users/changePassword",{currentPassword,newPassword,confirmNewPassword})
 
@@ -132,7 +127,8 @@ export async function updatePassword({currentPassword,newPassword,confirmNewPass
         
     
   }catch(error){
+    const message=error.response?.data?.message || "Something went wrong"
     console.log(error)
-    throw error
+    throw new Error(message)
   }
 }

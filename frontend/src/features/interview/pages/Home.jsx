@@ -3,6 +3,8 @@ import {useState,useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
 import HomePageWrapper from './reportcomp/HomePageWrapper.jsx'
 
+import SpinButton from './reportcomp/SpinButton.jsx'
+
 const Home=()=>{
 
   const {loading,generateReport}=useInterview()
@@ -28,14 +30,7 @@ const Home=()=>{
     return data
 
   }
- 
-  if(loading){
-    return (
-      <main>
-        <h1 className='h1style'>Generating your interview report ...</h1>
-      </main>
-    )
-  }
+
 
   return(
     <HomePageWrapper>
@@ -56,10 +51,7 @@ const Home=()=>{
         </label>
         <input hidden onChange={(e)=>setResumeUploaded(e.target.files[0])}  type="file" name='resume' id='resume' accept=".pdf" className="border hover:outline-none"></input>
 
-        <button
-        onClick={handleGenerateReport}
-        className="px-4 py-1.5">Generate Interview Report
-        </button>
+        <SpinButton onClick={handleGenerateReport} loading={loading} text={"Generate Interview Report"} />
 
       </div>
    

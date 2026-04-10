@@ -3,20 +3,29 @@ import { Link } from "react-router-dom"
 export const FrontPageComponent=({children,text,textspan,point})=>{
   return(
     <main >
-      <div className="flex border-1 border-neutral-300 r shadow-finta h-screen rounded-xl p-6">
-      <div className="w-1/2 md:w-[45%] bg-rose-200 rounded-tl-xl rounded-bl-xl">
-        {children}
-      </div>
-
-      <div className="w-1/2 md:w-[55%] bg-neutral-400 rounded-tr-xl rounded-br-xl">
-        <div className="container">
-        <p>{text} <Link to={point}>{textspan}</Link></p>
+      <div className=" flex md:py-5 h-screen px-2 ">
+   
+        <div className="w-[60%]  rounded-lg lg:m-20">
+          {children}
+          <p className="text-[12px] md:text-[15px] text-center ">{text} <Link
+          className="text-blue-600 hover:underline hover:underline-offset-2 transform-gpu duration-200 focus:scale-[101%]" to={point}>{textspan}</Link></p>
         </div>
-      </div>
+    
+    
+        <div className="w-[40%]  relative bg-neutral-300 z-0 group  overflow-hidden hover:bg-neutral-400 transform-cpu duration-300 rounded-xl ">
+
+          <div className="w-full absolute inset-0 bg-[url('/Cover.jpg')] bg-cover bg-center bg-no-repeat opacity-80 group-hover:scale-110 transform-gpu duration-300"></div>
+
+          <div className='absolute top-1/3 flex flex-col items-center justify-center text-center gap-5'>
+            <h2 className="text-xl md:text-2xl lg:text-4xl font-bold text-slate-600">Rate Your Resume</h2>
+            <p className=" text-netural-800 text-sm md:text-lg lg:text-xl md:px-8 font-normal md:font-semibold leading-tight">ReaI is the fast and effective website. For generating report for your Resume.</p>
+          </div>
+        </div>
+    
 
     </div>
   
     </main>
 
   )
-}
+} 
