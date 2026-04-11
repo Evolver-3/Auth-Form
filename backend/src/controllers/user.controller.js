@@ -130,7 +130,8 @@ const loginUser=asyncHandler(async(req,res)=>{
 
   const options={
     httpOnly:true,
-    secure:false
+    secure:true,
+    sameSite:"None"
   }
 
   return res.status(200).cookie("accessToken",accessToken,options).cookie("refreshToken",refreshToken,options).json(new ApiResponse(200,{
@@ -151,7 +152,8 @@ const logoutUser=asyncHandler(async(req,res)=>{
 
   const options={
     httpOnly:true,
-    secure:false
+    secure:true,
+    sameSite:"None"
   }
   return res.status(200).clearCookie("accessToken",options).clearCookie("refreshToken",options).json(new ApiResponse(200,null,"User logged out successfully !!"))
 })
@@ -179,7 +181,8 @@ const refreshAccessToken=asyncHandler(async(req,res)=>{
 
     const options={
       httpOnly:true,
-      secure:false
+      secure:true,
+      sameSite:"None"
     }
 
     const {accessToken,newRefreshToken}=await generateAccessAndRefreshTokens(user._id)
