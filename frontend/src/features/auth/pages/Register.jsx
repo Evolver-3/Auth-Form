@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth'
 import { FrontPageComponent } from './FrontPageComponent'
 import SpinButton from '../../interview/pages/reportcomp/SpinButton'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 const Register = () => {
 
@@ -34,14 +35,32 @@ const Register = () => {
     }
   }
 
+  const popVariant={
+    hidden:{
+      opacity:0,
+      x:50
+    },
+    show:{
+      opacity:1,
+      x:0,
+      transition:{
+        duration:0.5
+      }
+    }
+  }
+
   return (
     <FrontPageComponent >
      
-      <div className='flex flex-col gap-2 md:gap-14 my-10 md:my-6 w-full rounded-md px-13'>
+      <div className='flex flex-col gap-2 md:gap-14 my-10 md:my-10 w-full rounded-md px-13 relative'>
 
-        <h2 className='h2Headings'>Join Us</h2>
+        <h2 className=' font-flamenco font-semibold text-4xl text-center'>Join Us</h2>
       
-        {error && <p className='error-message'>{error}</p>}
+        <motion.div
+        variants={popVariant}
+        initial="hidden"
+        animate="show"
+        className='bg-red-200 rounded-full px-2 py-1 ring-1 ring-red-100 shadow-finta absolute right-4 -top-8'>{error && <p className='error-message'>{error}</p>}</motion.div>
 
         <form onSubmit={handleSubmit} >
 
@@ -128,7 +147,7 @@ const Register = () => {
         </div>
 
           </div>
-          <SpinButton text={"Create Account"} loading={loading} className='w-fit mt-6'/>
+          <SpinButton text={"Create Account"} loading={loading} className='w-1/2 mt-6'/>
         </form>
 
         <p className="text-[12px] md:text-[15px] text-center ">

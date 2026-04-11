@@ -3,14 +3,13 @@ import { Link } from "react-router-dom"
 export const FrontPageComponent=({children,text,textspan,point})=>{
   return(
     <main >
-      <div className=" flex md:py-5 h-screen px-2 ">
+      <div className=" flex h-screen gap-4 px-5 py-4 ">
    
-        <div className="w-[60%]  rounded-lg lg:m-20">
+        <div className="w-[60%] py-4 bg-slate-200 shadow-weird rounded-3xl">
           {children}
           <p className="text-[12px] md:text-[15px] text-center ">{text} <Link
           className="text-blue-600 hover:underline hover:underline-offset-2 transform-gpu duration-200 focus:scale-[101%]" to={point}>{textspan}</Link></p>
         </div>
-    
     
         <div className="w-[40%]  relative bg-neutral-300 z-0 group  overflow-hidden hover:bg-neutral-400 transform-cpu duration-300 rounded-xl ">
 

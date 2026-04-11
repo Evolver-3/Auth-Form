@@ -22,6 +22,15 @@ export default {
         finta:
           "0px 8px 12px -4px rgba(15,12,12,0.08),0px 0px 2px 0px rgba(15,12,12,0.10),0px 1px 2px 0px rgba(15,12,12,0.10)",
       },
+      fontFamily:{
+          bebas: ['"Bebas Neue"', 'sans-serif'],
+        flamenco: ['Flamenco', 'cursive'],
+        momo: ['"Momo Signature"', 'cursive'],
+        outfit: ['Outfit', 'sans-serif'],
+        saira: ['"Saira Stencil One"', 'sans-serif'],
+        ubuntu: ['Ubuntu', 'sans-serif'],
+        varela: ['Varela', 'sans-serif']
+      }
     },
   },
   plugins: [],

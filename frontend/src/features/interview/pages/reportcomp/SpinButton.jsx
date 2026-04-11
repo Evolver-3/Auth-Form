@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 
 const SpinButton = ({text,className='',loading,onClick}) => {
   return (
-    <motion.button className={`${className} py-1 px-2`} onClick={onClick}>
+    <motion.button className={`${className} w-1/2 flex items-center justify-center py-1`} onClick={onClick}>
       {loading ? 
       (
         <svg
