@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { useNavigate} from 'react-router-dom'
 
 import { useAuth } from '../hooks/useAuth'
 import { FrontPageComponent } from './FrontPageComponent'
 import { Link } from 'react-router-dom'
 import SpinButton from '../../interview/pages/reportcomp/SpinButton'
+import { motion,AnimatePresence } from 'framer-motion'
 
 
 const Login = () => {
@@ -32,18 +33,57 @@ const Login = () => {
     console.log(success)
   }
 
+  const popVariant={
+    hidden:{
+      opacity:0,
+      x:50
+    },
+    show:{
+      opacity:1,
+      x:0,
+      transition:{
+        duration:0.5
+      }
+    },
+    exit:{
+      opacity:0,
+      x:50,
+      transition:{
+        duration:0.5
+      }
+    }
+  }
+
+  useEffect(()=>{
+      if(error){
+        const timer=setTimeout(() => {
+          setError(null)
+        }, 2000);
+        return()=>clearInterval(timer)
+      }
+    },[error])
+
   return (
     <FrontPageComponent >
   
-      <div className='flex flex-col gap-2 md:gap-14 mt-20 md:mt-0 w-full rounded-md px-13'>
+      <div className='flex flex-col gap-2 md:gap-14 mt-20 md:mt-0 w-full rounded-md px-13 py-10 relative overflow-hidden'>
 
-        <h2 className='h2Headings'>Logged In</h2>
+        <h2 className=' font-flamenco font-semibold text-4xl text-center'>Logged In</h2>
         
-        {error && <p className='error-message'>{error}</p>}
+        <AnimatePresence>
+          {error && 
+        <motion.div
+        variants={popVariant}
+        initial="hidden"
+        animate="show"
+        exit="exit"
+        className='bg-red-200 rounded-full px-2 py-1 ring-1 ring-red-100 shadow-finta absolute right-4 top-0'><p className='error-message'>{error}</p></motion.div>
+        }
+        </AnimatePresence>
 
-        <form onSubmit={handleSubmit} className='mt-20'>
+        <form onSubmit={handleSubmit} >
           
-          <div className='flex flex-col items-center justify-center gap-6 w-full px-3 pb-5 md:px-2 lg:px-5'>
+          <div className='flex flex-col items-center justify-center gap-4 px-3 pb-5 md:px-2 lg:px-5 md:w-3/4'>
 
             <div className='inputGroup'>
               <DataLabels 
@@ -54,25 +94,26 @@ const Login = () => {
               placeholder={"Enter Your Email"}/>
             </div>
 
-            <div className='inputGroup relative'>
-              <DataLabels
-              text={"Password"}
-              type={showPassword ? "text":"password"} 
-              name={"Password"} 
-              onChange={(e)=>{setPassword(e.target.value)}}
-              placeholder={"Enter Your Password"}/>
-          
-  
-              <div className='absolute right-2.5 bottom-[1px] md:top-[57px] lg:bottom-0.5 -translate-y-1/2 cursor-pointer text-neutral-600 hover:text-neutral-500 bg-transparent px-1.5' onClick={()=>setShowPassword(!showPassword)}>
-              {showPassword ? <SvgIcon/>:<SvgIconHide/>}
-              </div>
+            <div className=" inputGroup relative">
+
+              <label >Password<span className='text-red-600'>*</span></label>
+         
+              <div className=' inputBody flex items-center justify-between'>
+              <input
+             className='bg-transparent outline-none'
+              type={showPassword ? "text": "password"} placeholder="Enter Your Password" name="Password" onChange={(e)=>{setPassword(e.target.value)}}/>
+
+              <div className=' cursor-pointer text-neutral-400 hover:text-neutral-500 bg-transparent ' onClick={()=>setShowPassword(!showPassword)}>
+              { showPassword ? <SvgIconHide/> : <SvgIcon/> }
             </div>
+         </div>
+          </div>
       
 
           </div>
 
       
-          <SpinButton text={"Sign In"} loading={loading}  className='w-fit mt-6'/>
+          <SpinButton text={"Sign In"} loading={loading}  className='w-1/2 mt-4'/>
         </form>
 
         <p className="text-[12px] md:text-[15px] text-center ">

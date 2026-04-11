@@ -1,10 +1,10 @@
-import React, { useState,useRef } from 'react'
+import React, { useState,useRef, useEffect } from 'react'
 import { useNavigate} from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { FrontPageComponent } from './FrontPageComponent'
 import SpinButton from '../../interview/pages/reportcomp/SpinButton'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const Register = () => {
 
@@ -46,28 +46,49 @@ const Register = () => {
       transition:{
         duration:0.5
       }
+    },
+    exit:{
+      opacity:0,
+      x:50,
+      transition:{
+        duration:0.5
+      }
     }
   }
+   
+  useEffect(()=>{
+    if(error){
+      const timer=setTimeout(() => {
+        setError(null)
+      }, 2000);
+      return()=>clearInterval(timer)
+    }
+  },[error])
 
   return (
     <FrontPageComponent >
      
-      <div className='flex flex-col gap-2 md:gap-14 my-10 md:my-10 w-full rounded-md px-13 relative'>
+      <div className='flex flex-col gap-2 md:gap-4 my-10 md:my-10 w-full rounded-md  relative'>
 
         <h2 className=' font-flamenco font-semibold text-4xl text-center'>Join Us</h2>
       
+        <AnimatePresence>
+          {error && 
         <motion.div
         variants={popVariant}
         initial="hidden"
         animate="show"
-        className='bg-red-200 rounded-full px-2 py-1 ring-1 ring-red-100 shadow-finta absolute right-4 -top-8'>{error && <p className='error-message'>{error}</p>}</motion.div>
+        exit="exit"
+        className='bg-red-200 rounded-full px-2 py-1 ring-1 ring-red-100 shadow-finta absolute right-4 -top-8'><p className='error-message'>{error}</p></motion.div>
+        }
+        </AnimatePresence>
 
         <form onSubmit={handleSubmit} >
 
-          <div className='flex flex-col items-center justify-center gap-6 w-full px-3 pb-5 md:px-2 lg:px-5'>
+          <div className='flex flex-col items-center justify-center gap-4  px-3 pb-5 md:px-2 lg:px-5 lg:py-10'>
 
 
-          <div className='grid grid-cols-1 gap-y-2 md:grid-cols-2 md:gap-x-5 md:gap-y-9'>
+          <div className='grid grid-cols-1 gap-y-2 lg:grid-cols-2  md:gap-y-3 lg:gap-x-10 lg:gap-y-10'>
             <div className='inputGroup'>
             <DataLabels 
           text={"Fullname"}
@@ -95,24 +116,24 @@ const Register = () => {
           placeholder={"Enter Your Email"}/>
           </div>
 
-          <div className=" relative inputGroup ">
+
+          <div className=" inputGroup relative">
+
+          <label >Password<span className='text-red-600'>*</span></label>
          
-          <DataLabels 
-          text={"Password"}
-          type={showPassword ? "text":"password"}
-          name={"Password"}
-          onChange={(e)=>{setPassword(e.target.value)}}
-          placeholder={"Enter Your Password"}/>
+         <div className=' inputBody flex items-center justify-between'>
+           <input
+          className='bg-transparent outline-none'
+          type={showPassword ? "text": "password"} placeholder="Enter Your Password" name="Password" onChange={(e)=>{setPassword(e.target.value)}}/>
 
-
-
-          <div className='absolute right-2.5 bottom-[1px] md:top-[57px] lg:bottom-0.5 -translate-y-1/2 cursor-pointer text-neutral-600 hover:text-neutral-500 bg-transparent px-1.5' onClick={()=>setShowPassword(!showPassword)}>
+          <div className=' cursor-pointer text-neutral-400 hover:text-neutral-500 bg-transparent ' onClick={()=>setShowPassword(!showPassword)}>
               { showPassword ? <SvgIconHide/> : <SvgIcon/> }
             </div>
+         </div>
           </div>
           </div>
 
-          <div className='flex flex-col md:flex-row items-center gap-5 justify-between md:mt-5'>
+          <div className='flex flex-col md:flex-row items-center gap-5 justify-between'>
 
           <label className=' uploadLabel'>
             <div className='uploadp'>
@@ -147,7 +168,7 @@ const Register = () => {
         </div>
 
           </div>
-          <SpinButton text={"Create Account"} loading={loading} className='w-1/2 mt-6'/>
+          <SpinButton text={"Create Account"} loading={loading} className='w-1/2 mt-2'/>
         </form>
 
         <p className="text-[12px] md:text-[15px] text-center ">
