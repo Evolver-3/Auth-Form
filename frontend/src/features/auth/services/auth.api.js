@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 const api=axios.create({
-  baseURL:"https://reai-sh4r.onrender.com",
+  baseURL:"development" ? "http://localhost:5000":"https://reai-sh4r.onrender.com",
   withCredentials:true
 })
 

@@ -37,6 +37,9 @@ button{
 .error-message{
   @apply text-red-500 text-[10px] md:text-xs text-center font-medium 
 }
+.success-message{
+  @apply text-green-500 text-[10px] md:text-xs text-center font-medium
+}
 
 .uploadLabel{
   @apply rounded-md bg-neutral-100 px-3 py-0.5  text-neutral-400 hover:text-neutral-500 text-sm  transition-all duration-200 hover:shadow-finta

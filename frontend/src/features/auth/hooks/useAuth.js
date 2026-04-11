@@ -6,7 +6,7 @@ export const useAuth=()=>{
 
   const context=useContext(AuthContext)
 
-  const {user,setUser,loading,setLoading}=context
+  const {user,setUser,loading,setLoading,error}=context
 
   const hasFetched=useRef(false)
 
@@ -59,16 +59,15 @@ export const useAuth=()=>{
   const updateAvatarImage=async({avatar})=>{
     setLoading(true)
 
-    console.log(avatar)
 
     try{
-      const data=await updateProfile({avatar:avatar})
+      const data=await updateProfile({avatar})
       setUser(prev=>({
         ...prev,
         avatar:data.data
       }))
  
-      console.log(avatar)
+    
       return true
 
     }catch(error){

@@ -11,6 +11,7 @@ const Home=()=>{
 
   const [jobDescription,setJobDescription]=useState("")
   const [selfDescription,setSelfDescription]=useState("")
+  const [btnLoading,setBtnLoading]=useState(false)
 
   const [resumeUploaded,setResumeUploaded]=useState(null)
 
@@ -18,16 +19,21 @@ const Home=()=>{
   const navigate=useNavigate()
 
   const handleGenerateReport=async()=>{
+
+     if(loading){
+      return(
+        <main><h2>Loading...</h2></main>
+      )
+    }
   
 
     const data=await generateReport({jobDescription,selfDescription,resume:resumeUploaded})
 
     console.log(data)
-   
-
     navigate(`/report/${data._id}`)
-
     return data
+    
+   
 
   }
 
@@ -51,7 +57,7 @@ const Home=()=>{
         </label>
         <input hidden onChange={(e)=>setResumeUploaded(e.target.files[0])}  type="file" name='resume' id='resume' accept=".pdf" className="border hover:outline-none"></input>
 
-        <SpinButton onClick={handleGenerateReport} loading={loading} text={"Generate Interview Report"} />
+        <SpinButton onClick={handleGenerateReport} loading={btnLoading} text={"Generate Interview Report"} />
 
       </div>
    

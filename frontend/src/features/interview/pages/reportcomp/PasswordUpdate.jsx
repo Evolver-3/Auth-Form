@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../../auth/hooks/useAuth'
 import SpinButton from './SpinButton'
+import {AnimatePresence, motion} from 'motion/react'
 
 const PasswordUpdate = () => {
 
   const {PasswordChange,error:authError,loading}=useAuth()
-  const [originalPassword,setOriginalPassword]=useState()
-  const [newPassword,setNewPassword]=useState()
-  const [confirmNew,setConfirmNew]=useState()
+  const [originalPassword,setOriginalPassword]=useState("")
+  const [newPassword,setNewPassword]=useState("")
+  const [confirmNew,setConfirmNew]=useState("")
 
   const [successMessage,setSuccessMessage]=useState('')
   const [errorMessage,setErrorMessage]=useState("")
+
 
 
 
@@ -18,6 +20,7 @@ const PasswordUpdate = () => {
     if(authError){
       setErrorMessage(authError)
     }
+    
   },[authError])
   const handleClick=async(e)=>{
     e.preventDefault()
@@ -46,7 +49,7 @@ const PasswordUpdate = () => {
       confirmNewPassword:confirmNew})
 
       if(success){
-        setSuccessMessage("Password updated successfully !!")
+        setSuccessMessage("Password updated successfully!!")
 
         setOriginalPassword('')
         setNewPassword('')
@@ -54,22 +57,71 @@ const PasswordUpdate = () => {
       } 
   }catch(err){
     setErrorMessage(err.message || 'An error occurred')
+  }   
   }
 
-      
+   const popVariant={
+    hidden:{
+      opacity:0,
+      x:50
+    },
+    show:{
+      opacity:1,
+      x:0,
+      transition:{
+        duration:0.5
+      }
+    },
+    exit:{
+      opacity:0,
+      x:50,
+      transition:{
+        duration:0.5
+      }
+    }
   }
+
+  useEffect(()=>{
+    if(errorMessage  || successMessage){
+      const timer=setTimeout(()=>{
+        setErrorMessage(null)
+        setSuccessMessage(null)
+      },2000)
+      return()=>clearTimeout(timer)
+    }
+  },[errorMessage,successMessage])
+
   return (
-    <div className=' flex flex-col items-center justify-center gap-3 w-full '>
-      {successMessage &&(
-        <h2 className='error-message'>
+    <div className=' flex flex-col items-center justify-center gap-3 w-full relative '>
+     
+      <AnimatePresence>
+        {successMessage && (
+          <motion.div
+            variants={popVariant}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+            className='bg-green-200 rounded-full px-2 py-1 ring-1 ring-green-100 shadow-finta '>
+            <p className='success-message '>
           {successMessage}
-        </h2>
+            </p>
+        </motion.div>
       )}
-      {errorMessage && (
-        <h2 className='error-message'>
+      </AnimatePresence>
+      <AnimatePresence>
+        {errorMessage && (
+          <motion.div
+            variants={popVariant}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+            className='bg-red-200 rounded-full px-2 py-1 ring-1 ring-red-100 shadow-finta '>
+            <p className='error-message'>
           {errorMessage}
-        </h2>
+            </p>
+        </motion.div>
       )}
+      </AnimatePresence>
       
      <form onSubmit={handleClick}
      className='gap-4 w-3/4 md:w-full'>
@@ -102,7 +154,7 @@ const PasswordUpdate = () => {
       onChange={(e)=>{setConfirmNew(e.target.value)}}/>
 
       
-      <SpinButton loading={loading} text={"Update Password"} />
+      <SpinButton loading={loading} text={"Update Password"} className='w-1/2 ' />
 
      </form>
      
