@@ -1,10 +1,11 @@
 import React, { useState,useRef, useEffect } from 'react'
 import { useNavigate} from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
-import { FrontPageComponent } from './FrontPageComponent'
-import SpinButton from '../../interview/pages/reportcomp/SpinButton'
+import { useAuth } from '../../hooks/useAuth'
+import { FrontPageComponent } from '../FrontPageComponent'
+import SpinButton from '../../../interview/pages/reportcomp/SpinButton'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
+
 
 const Register = () => {
 
@@ -20,14 +21,20 @@ const Register = () => {
 
   const [error,setError]=useState(null)
 
-  const {loading,handleRegister}=useAuth()
+  const [submitting,setSubmitting]=useState(false)
+
+  const {handleRegister}=useAuth()
 
  
   const handleSubmit=async(e)=>{
     e.preventDefault()
     setError("")
+    setSubmitting(true)
 
     const success=await handleRegister({username,fullname,email,password,avatar:avatarUpload,coverImage:coverUpload})
+
+    setSubmitting(false)
+
     if(success){
       navigate("/login")
     }else{
@@ -65,10 +72,10 @@ const Register = () => {
     }
   },[error])
 
-  return (
+  return (<>
     <FrontPageComponent >
      
-      <div className='flex flex-col gap-2 md:gap-4 my-10 md:my-10 w-full rounded-md  relative'>
+      <div className='flex flex-col gap-2 md:gap-4 my-10 md:my-10 w-full relative '>
 
         <h2 className=' font-flamenco font-semibold text-4xl text-center'>Join Us</h2>
       
@@ -85,10 +92,11 @@ const Register = () => {
 
         <form onSubmit={handleSubmit} >
 
-          <div className='flex flex-col items-center justify-center gap-4  px-3 pb-5 md:px-2 lg:px-5 lg:py-10'>
+          <div className='w-full  flex flex-col items-center justify-center gap-4  px-3 pb-5 md:px-2 lg:px-5  '>
 
 
-          <div className='grid grid-cols-1 gap-y-2 lg:grid-cols-2  md:gap-y-3 lg:gap-x-10 lg:gap-y-10'>
+          <div className='w-4/5 grid grid-cols-1 gap-y-2 lg:gap-y-4'>
+
             <div className='inputGroup'>
             <DataLabels 
           text={"Fullname"}
@@ -96,44 +104,43 @@ const Register = () => {
           name={"Fullname"}
           onChange={(e)=>{setFullname(e.target.value)}}
           placeholder={"Enter Your Fullname"}/>
-          </div>
+            </div>
 
-          <div className='inputGroup'>
+            <div className='inputGroup'>
             <DataLabels 
           text={"Username"}
           type={"text"}
           name={"Username"}
           onChange={(e)=>{setUsername(e.target.value)}}
           placeholder={"Enter Your Username"}/>
-          </div>
+            </div>
           
-          <div className='inputGroup'>
+            <div className='inputGroup'>
             <DataLabels 
           text={"Email"}
           type={"email"}
           name={"Email"}
           onChange={(e)=>{setEmail(e.target.value)}}
           placeholder={"Enter Your Email"}/>
-          </div>
+            </div>
 
-
-          <div className=" inputGroup relative">
+        <div className=" inputGroup">
 
           <label >Password<span className='text-red-600'>*</span></label>
          
-         <div className=' inputBody flex items-center justify-between'>
+         <div className=' inputBody flex items-center justify-between relative'>
            <input
           className='bg-transparent outline-none'
           type={showPassword ? "text": "password"} placeholder="Enter Your Password" name="Password" onChange={(e)=>{setPassword(e.target.value)}}/>
 
-          <div className=' cursor-pointer text-neutral-400 hover:text-neutral-500 bg-transparent ' onClick={()=>setShowPassword(!showPassword)}>
+          <div className='absolute -top-1/5 right-1 md:right-4 cursor-pointer text-neutral-400 hover:text-neutral-500 bg-transparent ' onClick={()=>setShowPassword(!showPassword)}>
               { showPassword ? <SvgIconHide/> : <SvgIcon/> }
             </div>
          </div>
           </div>
           </div>
 
-          <div className='flex flex-col md:flex-row items-center gap-5 justify-between'>
+          <div className='flex items-center gap-5 justify-between'>
 
           <label className=' uploadLabel'>
             <div className='uploadp'>
@@ -168,7 +175,7 @@ const Register = () => {
         </div>
 
           </div>
-          <SpinButton text={"Create Account"} loading={loading} className='w-1/2 mt-2'/>
+          <SpinButton text={"Create Account"} loading={submitting} className='w-1/2 mt-2'/>
         </form>
 
         <p className="text-[12px] md:text-[15px] text-center ">
@@ -177,7 +184,8 @@ const Register = () => {
 
       </div>
   
-  </FrontPageComponent>
+    </FrontPageComponent>
+    </>
   )
 }
 
@@ -211,8 +219,6 @@ const SvgIconHide=({className})=>{
     </svg>
   )
 }
-
-
 
 const UploadIcon=()=>{
   return (

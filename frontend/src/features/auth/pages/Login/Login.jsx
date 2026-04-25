@@ -1,16 +1,14 @@
 import React, { useState,useEffect } from 'react'
 import { useNavigate} from 'react-router-dom'
-
-import { useAuth } from '../hooks/useAuth'
-import { FrontPageComponent } from './FrontPageComponent'
+import { useAuth } from '../../hooks/useAuth'
+import { FrontPageComponent } from '../FrontPageComponent'
 import { Link } from 'react-router-dom'
-import SpinButton from '../../interview/pages/reportcomp/SpinButton'
+import SpinButton from '../../../interview/pages/reportcomp/SpinButton'
 import { motion,AnimatePresence } from 'framer-motion'
-
 
 const Login = () => {
 
-  const {loading,handleLogin}=useAuth()
+  const {handleLogin}=useAuth()
 
   const navigate=useNavigate()
 
@@ -20,13 +18,21 @@ const Login = () => {
 
   const [error,setError]=useState(null)
 
+  const [submitting,setSubmitting]=useState(false)
+
 
   const handleSubmit=async(e)=>{
     e.preventDefault()
     setError("")
+    setSubmitting(true)
+
     const success=await handleLogin({email,password})
+
+    setSubmitting(false)
     if(success){
-      navigate("/")
+      setTimeout(()=>{
+        navigate("/")
+      },500)
     } else {
       setError("Invalid email or password")
     }
@@ -59,11 +65,12 @@ const Login = () => {
         const timer=setTimeout(() => {
           setError(null)
         }, 2000);
-        return()=>clearInterval(timer)
+        return()=>clearTimeout(timer)
       }
     },[error])
 
-  return (
+  return (<>
+
     <FrontPageComponent >
   
       <div className='flex flex-col gap-2 md:gap-14 mt-20 md:mt-0 w-full rounded-md px-13 py-10 relative overflow-hidden'>
@@ -83,7 +90,7 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} >
           
-          <div className='flex flex-col items-center justify-center gap-4 px-3 pb-5 md:px-2 lg:px-5 md:w-3/4'>
+          <div className='flex flex-col items-center justify-center gap-6 md:gap-10 px-3 pb-5 md:px-2 lg:px-5 md:w-3/4'>
 
             <div className='inputGroup'>
               <DataLabels 
@@ -111,9 +118,8 @@ const Login = () => {
       
 
           </div>
-
-      
-          <SpinButton text={"Sign In"} loading={loading}  className='w-1/2 mt-4'/>
+          
+          <SpinButton text={"Sign In"} loading={submitting}  className='w-1/2 mt-4'/>
         </form>
 
         <p className="text-[12px] md:text-[15px] text-center ">
@@ -125,6 +131,7 @@ const Login = () => {
       </div>
  
     </FrontPageComponent>
+    </>
   )
 }
 
