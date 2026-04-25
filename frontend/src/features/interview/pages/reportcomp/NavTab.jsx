@@ -70,6 +70,12 @@ const NavTab = () => {
         onClick={handleLoggedOutDone}>Sign Out
         </motion.li>
 
+        <motion.li
+        variants={childVariant}
+        className='navli'>
+          <Link to={"/"}>Generate New Report</Link>
+        </motion.li>
+
       </motion.ul>
       
     </motion.div>

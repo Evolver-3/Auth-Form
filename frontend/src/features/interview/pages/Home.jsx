@@ -7,7 +7,7 @@ import SpinButton from './reportcomp/SpinButton.jsx'
 
 const Home=()=>{
 
-  const {loading,generateReport}=useInterview()
+  const {generateReport}=useInterview()
 
   const [jobDescription,setJobDescription]=useState("")
   const [selfDescription,setSelfDescription]=useState("")
@@ -15,26 +15,21 @@ const Home=()=>{
 
   const [resumeUploaded,setResumeUploaded]=useState(null)
 
-
   const navigate=useNavigate()
 
   const handleGenerateReport=async()=>{
+    try{
+        setBtnLoading(true)
 
-     if(loading){
-      return(
-        <main><h2>Loading...</h2></main>
-      )
-    }
+        const data=await generateReport({jobDescription,selfDescription,resume:resumeUploaded})
   
-
-    const data=await generateReport({jobDescription,selfDescription,resume:resumeUploaded})
-
-    console.log(data)
-    navigate(`/report/${data._id}`)
-    return data
-    
-   
-
+        console.log(data)
+        navigate(`/report/${data._id}`)
+      }catch(error){
+        console.error("Error generating report:", error)
+      }finally{
+        setBtnLoading(false)
+      }
   }
 
 

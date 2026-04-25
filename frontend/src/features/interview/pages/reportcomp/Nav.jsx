@@ -30,12 +30,12 @@ const Nav = () => {
     </div>
 
     
-      <AnimatePresence>
         <motion.div
         className='relative'>
-          {open && <NavTab/>}
+          <AnimatePresence>{open && <NavTab/>}
+          </AnimatePresence>
         </motion.div>
-      </AnimatePresence>
+      
 
        <AnimatePresence>
           {userAvatar && (
