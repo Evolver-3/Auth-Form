@@ -1,11 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
-import Login from "./features/auth/pages/Login";
-import Register from "./features/auth/pages/Register";
-import Protected from "./features/auth/components/Protected";
+import Login from "./features/auth/pages/Login/Login.jsx";
+import Register from "./features/auth/pages/Register/Register.jsx";
+import Protected from "./features/auth/components/Protected.jsx";
 import Home from "./features/interview/pages/Home";
 import Report from "./features/interview/pages/Report";
 import AllReport from "./features/interview/pages/reportcomp/AllReport";
 import UpdateProfile from "./features/interview/pages/reportcomp/UpdateProfile";
+
+
 
 export const router=createBrowserRouter([
   {
@@ -34,7 +36,7 @@ export const router=createBrowserRouter([
   },
   {
     path:"/updateProfile",
-    element:<UpdateProfile/>,
+    element:<Protected><UpdateProfile/></Protected>,
     errorElement:<ErrorPage/>
   }
 ])
