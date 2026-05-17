@@ -6,6 +6,11 @@ const api=axios.create({
   withCredentials:true
 })
 
+// const api=axios.create({
+//   baseURL:"http://localhost:5000",
+//   withCredentials:true
+// })
+
 function extractUser(responseData) {
 
   const user = responseData.data ||responseData.data?.user || responseData.user || null

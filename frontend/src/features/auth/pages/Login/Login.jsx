@@ -5,6 +5,7 @@ import { FrontPageComponent } from '../FrontPageComponent'
 import { Link } from 'react-router-dom'
 import SpinButton from '../../../interview/pages/reportcomp/SpinButton'
 import { motion,AnimatePresence } from 'framer-motion'
+import { Eye, EyeOff } from 'lucide-react'
 
 const Login = () => {
 
@@ -24,9 +25,16 @@ const Login = () => {
   const handleSubmit=async(e)=>{
     e.preventDefault()
     setError("")
+
+    if(!email.trim() || !password.trim()){
+      setError("No fields should be empty!!")
+      }
+
     setSubmitting(true)
 
     const success=await handleLogin({email,password})
+
+    
 
     setSubmitting(false)
     if(success){
@@ -34,7 +42,7 @@ const Login = () => {
         navigate("/")
       },500)
     } else {
-      setError("Invalid email or password")
+        setError("Invalid email or password")
     }
     console.log(success)
   }
@@ -97,6 +105,7 @@ const Login = () => {
               text={"Email"} 
               type={"email"} 
               name={"Email"} 
+              value={email}
               onChange={(e)=>{setEmail(e.target.value)}}
               placeholder={"Enter Your Email"}/>
             </div>
@@ -106,12 +115,16 @@ const Login = () => {
               <label >Password<span className='text-red-600'>*</span></label>
          
               <div className=' inputBody flex items-center justify-between'>
+
               <input
-             className='bg-transparent outline-none'
-              type={showPassword ? "text": "password"} placeholder="Enter Your Password" name="Password" onChange={(e)=>{setPassword(e.target.value)}}/>
+              className='bg-transparent outline-none'
+              type={showPassword ? "text": "password"} 
+              placeholder="Enter Your Password" name="Password"
+              value={password}
+              onChange={(e)=>{setPassword(e.target.value)}}/>
 
               <div className=' cursor-pointer text-neutral-400 hover:text-neutral-500 bg-transparent ' onClick={()=>setShowPassword(!showPassword)}>
-              { showPassword ? <SvgIconHide/> : <SvgIcon/> }
+              { showPassword ? <EyeOff size={24}/> :<Eye size={24}/>  }
             </div>
          </div>
           </div>
@@ -138,30 +151,18 @@ const Login = () => {
 export default Login
 
 
-const DataLabels=({text,type,placeholder,name,onChange})=>{
+export const DataLabels=({text,type,placeholder,name,onChange,value})=>{
   return(
     <>
       <label>{text}<span className='text-red-600'>*</span></label>
       <input
-      className='inputBody '
-      type={type} placeholder={placeholder} name={name} onChange={onChange}/>
+      className='inputBody'
+      type={type} 
+      placeholder={placeholder}
+      name={name}
+      value={value}
+      onChange={onChange}/>
     </>
   )
 }
 
-
-const SvgIcon=({className})=>{
-  return(
-    <svg className={className}  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" >
-      <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6"></path><path d="M12 19c7.63 0 9.93-6.62 9.95-6.68.07-.21.07-.43 0-.63-.02-.07-2.32-6.68-9.95-6.68s-9.93 6.61-9.95 6.67c-.07.21-.07.43 0 .63.02.07 2.32 6.68 9.95 6.68Zm0-12c5.35 0 7.42 3.85 7.93 5-.5 1.16-2.58 5-7.93 5s-7.42-3.84-7.93-5c.5-1.16 2.58-5 7.93-5"></path>
-      </svg>
-  )
-}
-
-const SvgIconHide=({className})=>{
-  return (
-    <svg className={className}  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" >
-      <path d="M12 17c-5.35 0-7.42-3.84-7.93-5 .2-.46.65-1.34 1.45-2.23l-1.4-1.4c-1.49 1.65-2.06 3.28-2.08 3.31-.07.21-.07.43 0 .63.02.07 2.32 6.68 9.95 6.68.91 0 1.73-.1 2.49-.26l-1.77-1.77c-.24.02-.47.03-.72.03Zm9.95-4.68c.07-.21.07-.43 0-.63-.02-.07-2.32-6.68-9.95-6.68-1.84 0-3.36.39-4.61.97L2.71 1.29 1.3 2.7l4.32 4.32 1.42 1.42 2.27 2.27 3.98 3.98 1.8 1.8 1.53 1.53 4.68 4.68 1.41-1.41-4.32-4.32c2.61-1.95 3.55-4.61 3.56-4.65m-7.25.97c.19-.39.3-.83.3-1.29 0-1.64-1.36-3-3-3-.46 0-.89.11-1.29.3l-1.8-1.8c.88-.31 1.9-.5 3.08-.5 5.35 0 7.42 3.85 7.93 5-.3.69-1.18 2.33-2.96 3.55z"></path>
-    </svg>
-  )
-}

@@ -4,7 +4,7 @@
 
 
 main{
-  @apply bg-gray-200 min-w-full min-h-screen
+  @apply bg-gray-200 min-w-full min-h-screen 
 }
 
 form{
@@ -76,4 +76,14 @@ button{
 
 .footerLink{
   @apply cursor-pointer text-sm hover:underline underline-offset-2 hover:scale-[99%] active:scale-100 transition-transform duration-300 hover:text-blue-600
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
